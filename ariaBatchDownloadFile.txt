@@ -1,0 +1,4 @@
+
+		ftp.sra.ebi.ac.uk/vol1/fastq/ERR773/ERR773800/ERR773800_1.fastq.gz
+	        ftp.sra.ebi.ac.uk/vol1/fastq/ERR773/ERR773800/ERR773800_2.fastq.gz
+		
