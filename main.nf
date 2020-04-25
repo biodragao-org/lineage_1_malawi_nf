@@ -385,10 +385,8 @@ gzip these files
 */
 
 process gzip {
-//    echo true
-
-    publishDir 'results/gzip'
     container 'abhi18av/biodragao_base'
+    publishDir 'results/gzip'
 
     input:
     set genomeName, file(genomeReads) from ch_gzip
@@ -408,28 +406,6 @@ process gzip {
     """
 }
 
-//###############
-//snippy_command
-//###############
-//*/
-//
-//process runSnippy {
-//
-//    container 'quay.io/biocontainers/snippy:4.6.0--0'
-//    publishDir 'results/snippy', pattern: './*vcf.gz'
-//
-//    input:
-//    path refGbk from ch_refGbk
-//    tuple (genomeInfo, path(read_1_gz), path(read_2_gz)) from ch_snippy
-//
-//    script:
-//    genomeName = read_1_gz.name.split("\\.")[0].split("\\_")[0]
-//
-//    """
-//    snippy --cpus 4 --outdir $genomeName --ref $refGbk --R1 $read_1_gz --R2 $read_2_gz
-//    """
-//}
-
 
 
 
@@ -442,10 +418,10 @@ trimmomatic
 
 
 process runTrimmomatic {
-//    echo true
+    container 'quay.io/biocontainers/trimmomatic:0.35--6'
+
 // TODO add regexp to only publish the *paired* files
     publishDir 'results/trimmomatic'
-    container 'quay.io/biocontainers/trimmomatic:0.35--6'
 
 
     input:
@@ -487,11 +463,9 @@ fastqc
 
 
 
-
-
-process fastqcAfterTrimmomatic {
-    publishDir 'results/fastqcAfterTrimmomatic'
+process fastqc {
     container 'quay.io/biocontainers/fastqc:0.11.9--0'
+    publishDir 'results/fastqc'
 
     input:
     tuple  genomeName, path(fq_1_paired), path(fq_2_paired) from ch_fastqc
@@ -515,11 +489,9 @@ process fastqcAfterTrimmomatic {
 */
 
 process tbProfiler {
-//    publishDir path: output_tbProfiler, pattern: "./results/*json", mode: "copy"
-//    conda conda_emilyn_py3 
-
-//    publishDir 'results/tbProfiler'
     container 'quay.io/biocontainers/tb-profiler:2.8.6--pypy_0'
+
+    publishDir 'results/tbProfiler'
 
     input:
     set genomeName, file(genomeReads) from ch_tbProfiler_in
@@ -540,11 +512,10 @@ process tbProfiler {
 */
 
 process rdAnalyzer {
-//    publishDir path: output_rdAnalyzer, pattern: "*result", mode: "copy"
+    container 'abhi18av/rdanalyzer'
 //    conda conda_emilyn_py2
 
-//    publishDir 'results/rdAnalyzer'
-    container 'abhi18av/rdanalyzer'
+    publishDir 'results/rdAnalyzer'
 
 
     input:
@@ -565,13 +536,11 @@ process rdAnalyzer {
 */
 
 process spotyping {
-//    publishDir path: output_spotyping, pattern: "*txt", mode: "copy"
-//    publishDir path: output_spotyping, pattern: "*xls", mode: "copy"
+    container 'abhi18av/spotyping'
 //    conda conda_emilyn_py2
 
 
-//    publishDir 'results/spotyping'
-    container 'abhi18av/spotyping'
+    publishDir 'results/spotyping'
 
 
     input:
@@ -586,20 +555,24 @@ process spotyping {
 
 
 
-
-
-
-
-/////*
-////###############
-////Workflow complete
-////###############
-////*/
-////
-////
-////workflow.onComplete {
-////    println "Pipeline completed at: $workflow.complete"
-////    println "Execution status: ${workflow.success ? 'OK' : 'failed'}"
-////}
-////
-
+//###############
+//snippy_command
+//###############
+//*/
+//
+//process snippy {
+//
+//    container 'quay.io/biocontainers/snippy:4.6.0--0'
+//    publishDir 'results/snippy', pattern: './*vcf.gz'
+//
+//    input:
+//    path refGbk from ch_refGbk
+//    tuple (genomeInfo, path(read_1_gz), path(read_2_gz)) from ch_snippy
+//
+//    script:
+//    genomeName = read_1_gz.name.split("\\.")[0].split("\\_")[0]
+//
+//    """
+//    snippy --cpus 4 --outdir $genomeName --ref $refGbk --R1 $read_1_gz --R2 $read_2_gz
+//    """
+//}
