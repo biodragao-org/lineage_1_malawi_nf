@@ -314,8 +314,6 @@ malawiLineage1_genomeIDs = [
 
 
 
-params.outdir = "results"
-
 ch_refGbk = Channel.value("$baseDir/NC000962_3.gbk")
 ch_refFasta = Channel.value("$baseDir/NC000962_3.fasta")
 
@@ -352,7 +350,7 @@ download genomes
 --------------------------------------------
 */
 
-//Channel.fromFilePairs("./*_{1,2}.fastq.gz", flat: true)
+//Channel.fromFilePairs("./*_{1,2}.fastq.gz")
 //        .into { ch_fastqGz; ch_snippy }
 
 
@@ -367,11 +365,6 @@ ids = [
 'ERR036213',
 'ERR036217',
 ]
-
-//Channel
-//    .fromSRA(ids)
-//    .set { ch_gzip }
-
 
 Channel
     .fromSRA(ids, cache: true)
