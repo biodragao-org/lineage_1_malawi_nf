@@ -3,3 +3,5 @@ work
 .nextflow.*
 *swp
 *~*
+/NC000962_3.fasta
+/NC000962_3.gbk
