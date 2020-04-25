@@ -312,7 +312,7 @@ malawiLineage1_genomeIDs = [
 'ERR779679'
 ]
 
-
+params.processResultsDir = "processResultsDir"
 
 ch_refGbk = Channel.value("$baseDir/NC000962_3.gbk")
 ch_refFasta = Channel.value("$baseDir/NC000962_3.fasta")
@@ -379,7 +379,7 @@ gzip these files
 
 process gzip {
     container 'abhi18av/biodragao_base'
-    publishDir 'results/gzip'
+    publishDir """${params.processResultsDir}/gzip"""
 
     input:
     set genomeName, file(genomeReads) from ch_gzip
@@ -414,7 +414,7 @@ process trimmomatic {
     container 'quay.io/biocontainers/trimmomatic:0.35--6'
 
 // TODO add regexp to only publish the *paired* files
-    publishDir 'results/trimmomatic'
+    publishDir """${params.processResultsDir}/trimmomatic"""
 
 
     input:
@@ -458,7 +458,7 @@ fastqc
 
 process fastqc {
     container 'quay.io/biocontainers/fastqc:0.11.9--0'
-    publishDir 'results/fastqc'
+    publishDir """${params.processResultsDir}/fastqc"""
 
     input:
     tuple  genomeName, path(fq_1_paired), path(fq_2_paired) from ch_fastqc
@@ -483,8 +483,7 @@ process fastqc {
 
 process tbProfiler {
     container 'quay.io/biocontainers/tb-profiler:2.8.6--pypy_0'
-
-    publishDir 'results/tbProfiler'
+    publishDir """${params.processResultsDir}/tbProfiler"""
 
     input:
     set genomeName, file(genomeReads) from ch_tbProfiler_in
@@ -508,7 +507,7 @@ process rdAnalyzer {
     container 'abhi18av/rdanalyzer'
 //    conda conda_emilyn_py2
 
-    publishDir 'results/rdAnalyzer', pattern: "*.result", mode: "copy"
+    publishDir """${params.processResultsDir}/rdAnalyzer""", pattern: "*.result", mode: "copy"
 
 
     input:
@@ -533,7 +532,7 @@ process spotyping {
 //    conda conda_emilyn_py2
 
 
-    publishDir 'results/spotyping', pattern: "${spotypingResult}", mode: "copy"
+    publishDir """${params.processResultsDir}/spotyping""", pattern: "${spotypingResult}", mode: "copy"
 
     input:
     tuple genomeName, path(fq_1_paired) from ch_in_spotyping
