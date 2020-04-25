@@ -553,7 +553,7 @@ process rdAnalyzer {
     script:
 
     """
-    python  /RD-Analyzer/RD-Analyzer.py  -o ./${genomeName}_rdanalyzer ${fq_1} ${fq_2}
+    python  /RD-Analyzer/RD-Analyzer.py  -o ${genomeName} ${fq_1} ${fq_2}
     """
 }
 
@@ -580,7 +580,7 @@ process spotyping {
     script:
 
     """
-    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ./${fq_1_paired} -o ${genomeName}.txt
+    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ${fq_1_paired} -o ${genomeName}.txt
     """
 }
 
