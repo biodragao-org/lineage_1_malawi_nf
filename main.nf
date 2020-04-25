@@ -518,14 +518,15 @@ process tbProfiler {
 //    publishDir path: output_tbProfiler, pattern: "./results/*json", mode: "copy"
 //    conda conda_emilyn_py3 
 
-    publishDir 'results/tbProfiler'
+//    publishDir 'results/tbProfiler'
     container 'quay.io/biocontainers/tb-profiler:2.8.6--pypy_0'
 
     input:
-    tuple genomeName, path(read_1_gz), path(read_2_gz) from ch_tbProfiler_in
-//    set genomeName, file(genomeReads) from ch_gzip
+    set genomeName, file(genomeReads) from ch_tbProfiler_in
 
     script:
+    read_1_gz = genomeReads[0]
+    read_2_gz = genomeReads[1]
 
     """
     tb-profiler profile -1 $read_1_gz -2 $read_2_gz  -t 4 -p $genomeName
@@ -542,8 +543,8 @@ process rdAnalyzer {
 //    publishDir path: output_rdAnalyzer, pattern: "*result", mode: "copy"
 //    conda conda_emilyn_py2
 
-    publishDir 'results/rdAnalyzer'
-    container 'abhi18av/rdAnalyzer'
+//    publishDir 'results/rdAnalyzer'
+    container 'abhi18av/rdanalyzer'
 
 
     input:
@@ -569,7 +570,7 @@ process spotyping {
 //    conda conda_emilyn_py2
 
 
-    publishDir 'results/spotyping'
+//    publishDir 'results/spotyping'
     container 'abhi18av/spotyping'
 
 
@@ -579,7 +580,7 @@ process spotyping {
     script:
 
     """
-    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ./${fq_1} -o ${genomeName}.txt
+    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ./${fq_1_paired} -o ${genomeName}.txt
     """
 }
 
