@@ -508,7 +508,7 @@ process rdAnalyzer {
     container 'abhi18av/rdanalyzer'
 //    conda conda_emilyn_py2
 
-    publishDir 'results/rdAnalyzer'
+    publishDir 'results/rdAnalyzer', pattern: "*.result", mode: "copy"
 
 
     input:
@@ -533,16 +533,16 @@ process spotyping {
 //    conda conda_emilyn_py2
 
 
-    publishDir 'results/spotyping'
-
+    publishDir 'results/spotyping', pattern: "${spotypingResult}", mode: "copy"
 
     input:
     tuple genomeName, path(fq_1_paired) from ch_in_spotyping
 
     script:
+    spotypingResult = "${genomeName}.txt"
 
     """
-    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ${fq_1_paired} -o ${genomeName}.txt
+    python /SpoTyping-v2.0/SpoTyping-v2.0-commandLine/SpoTyping.py ${fq_1_paired} -o $spotypingResult
     """
 }
 
