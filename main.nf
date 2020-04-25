@@ -410,7 +410,7 @@ trimmomatic
 */
 
 
-process runTrimmomatic {
+process trimmomatic {
     container 'quay.io/biocontainers/trimmomatic:0.35--6'
 
 // TODO add regexp to only publish the *paired* files
