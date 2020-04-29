@@ -1,0 +1,21 @@
+defaultTasks 'hello'
+
+
+task run(type: Exec) {
+
+    workingDir '.'
+    ignoreExitValue true
+
+
+    executable 'nextflow'
+    args 'run', 'main.nf', '-resume'
+
+}
+
+
+task intro {
+    dependsOn hello
+    doLast {
+        println "I'm Gradle"
+    }
+}
